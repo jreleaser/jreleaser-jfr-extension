@@ -4,6 +4,14 @@
 :project-group:   org.jreleaser.extensions
 :project-version: 1.0.0-SNAPSHOT
 
+image:https://github.com/{project-owner}/{project-name}/workflows/EarlyAccess/badge.svg["Build Status", link="https://github.com/{project-owner}/{project-name}/actions"]
+image:https://img.shields.io/maven-central/v/{project-group}/{project-name}-core.svg[Download, link="https://search.maven.org/#search|ga|1|{project-name}"]
+
 ---
 
-Java Flight Recorder extension for JReleaser
+Java Flight Recorder extension for JReleaser.
+
+== Resources
+
+ * link:https://jreleaser.org/guide/latest/configuration/extensions.html[Configuration DSL]
+ * link:https://jreleaser.org/guide/latest/extensions/extensions/jreleaser-jfr.html[Documentation]
