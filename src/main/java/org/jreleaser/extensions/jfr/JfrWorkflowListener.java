@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2022 The JReleaser authors.
+ * Copyright 2022-2023 The JReleaser authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import jdk.jfr.Recording;
 import org.jreleaser.extensions.api.workflow.WorkflowListener;
 import org.jreleaser.extensions.jfr.events.AnnounceEvent;
 import org.jreleaser.extensions.jfr.events.AssembleEvent;
+import org.jreleaser.extensions.jfr.events.CatalogEvent;
 import org.jreleaser.extensions.jfr.events.DeployEvent;
 import org.jreleaser.extensions.jfr.events.DistributionEvent;
 import org.jreleaser.extensions.jfr.events.DownloadEvent;
@@ -34,6 +35,7 @@ import org.jreleaser.extensions.jfr.events.WorkflowStepEvent;
 import org.jreleaser.model.api.JReleaserContext;
 import org.jreleaser.model.api.announce.Announcer;
 import org.jreleaser.model.api.assemble.Assembler;
+import org.jreleaser.model.api.catalog.Cataloger;
 import org.jreleaser.model.api.deploy.Deployer;
 import org.jreleaser.model.api.distributions.Distribution;
 import org.jreleaser.model.api.download.Downloader;
@@ -167,6 +169,13 @@ public final class JfrWorkflowListener implements WorkflowListener {
         if (!enabled) return;
 
         AssembleEvent.event(event.getType().toString(), assembler);
+    }
+
+    @Override
+    public void onCatalogStep(ExecutionEvent event, JReleaserContext context, Cataloger cataloger) {
+        if (!enabled) return;
+
+        CatalogEvent.event(event.getType().toString(), cataloger);
     }
 
     @Override

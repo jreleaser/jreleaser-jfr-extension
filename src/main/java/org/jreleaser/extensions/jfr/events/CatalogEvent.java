@@ -20,15 +20,19 @@ package org.jreleaser.extensions.jfr.events;
 import jdk.jfr.Description;
 import jdk.jfr.Event;
 import jdk.jfr.Label;
-import org.jreleaser.model.api.deploy.Deployer;
+import org.jreleaser.model.api.catalog.Cataloger;
+import org.jreleaser.model.api.catalog.sbom.SbomCataloger;
 
 /**
  * @author Andres Almiray
- * @since 1.0.0
+ * @since 1.1.0
  */
-@Label("Deploy Event")
-@Description("Deploy Event")
-public class DeployEvent extends Event {
+@Label("Catalog Event")
+@Description("Catalog Event")
+public class CatalogEvent extends Event {
+    private static final String SBOM_CATALOGER = SbomCataloger.class.getSimpleName();
+    private static final String CATALOGER = Cataloger.class.getSimpleName();
+
     @Label("Kind")
     public String kind;
 
@@ -41,12 +45,20 @@ public class DeployEvent extends Event {
     @Label("Name")
     public String name;
 
-    public static void event(String kind, Deployer deployer) {
-        DeployEvent event = new DeployEvent();
+    public static void event(String kind, Cataloger cataloger) {
+        CatalogEvent event = new CatalogEvent();
         event.kind = kind;
-        event.group = deployer.getGroup();
-        event.type = deployer.getType();
-        event.name = deployer.getName();
+        event.group = cataloger.getGroup();
+        event.type = cataloger.getType();
+        event.name = extractName(cataloger.getClass().getSimpleName());
         event.commit();
+    }
+
+    // https://github.com/jreleaser/jreleaser/issues/1252
+    private static String extractName(String className) {
+        if (className.endsWith(SBOM_CATALOGER)) {
+            return className.substring(0, className.length() - SBOM_CATALOGER.length());
+        }
+        return className.substring(0, className.length() - CATALOGER.length());
     }
 }
